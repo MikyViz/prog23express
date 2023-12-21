@@ -1,12 +1,11 @@
 const express = require('express')
 const router = express.Router();
+const {addArticle, getAll, getArticle} = require('../controllers/articlesControlers.js');
 
-router.get('/', (req, res) => {
-    res.send("i'm a user!!!")
-})
+router.get('/', getAll);
 
-router.get('/add', (req, res) => {
-    res.send("add user to the db!!!")
-})
+router.get('/getArticle/:id', getArticle);
+
+router.post('/add', addArticle);
 
 module.exports = router;

@@ -3,6 +3,7 @@ const app = express()
 const fs = require('fs');
 const path = require('path');
 const user = require('./routes/user');
+const article = require('./routes/article');
 const cors = require('cors');
 
 const logger = require('./middleware/logger');
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(logger); 
 
 app.use("/user", user)
+app.use("/article", article)
 
 app.post('/', (req, res) => {
   console.log(req.body);
