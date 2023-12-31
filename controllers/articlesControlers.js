@@ -32,18 +32,33 @@ module.exports = {
             console.error(error);
         }
     },
-    updatearticle: (req, res) => {
-        let id = req.params.id;
-        res.json({
-            message: "update article: ",
+    updateArticle: async (req, res) => {
+        try {
+            let id = req.params.id;
+            let validArticle = await Article.validArticle(req.body);
+            if (validArticle.error)
+             {return  res.status(400).json(validArticle.error.details[0].message)} 
+            let updateArticle = await Article.updateArticleById(req.body, id)
+            res.json({
+            message: "article updated sucsessfull",
             id: id
-        })
+            })
+        } catch (error) {
+            console.log(error);
+        }
+     
     },
-    delarticle: (req, res) => {
-        let id = req.params.id;
+    delArticle: async (req, res) => {
+        try {
+            let id = req.params.id;
+            let deleteArticle = await Article.deleteArticleById(id);
         res.json({
             message: "del article from the db!!!",
-            id: id
+            id: id,
+            deleteArticle: deleteArticle
         })
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

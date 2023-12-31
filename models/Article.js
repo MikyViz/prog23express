@@ -1,4 +1,5 @@
 const db = require('../config/db.js');
+const joi = require('joi');
 
 class Article{
     constructor(userID, articleName, content){
@@ -21,7 +22,23 @@ class Article{
         let sql =`SELECT * FROM articles WHERE id=?`;
         return await db.execute(sql, [id]); 
     }
-
+    static async updateArticleById(data, id) {
+        let sql = `UPDATE articles SET ? WHERE id=?`;
+        const [updatedArticle, _] = await db.query(sql, [data, id]);
+        return updatedArticle;
+    }
+    static async deleteArticleById(id) {
+        let sql = `DELETE FROM articles WHERE id = ?`;
+        return await db.execute(sql, [id]);
+    }
+    static async validArticle(body){
+        let articleSchema = joi.object({
+            userID: joi.number().required().min(0),
+            articleName: joi.string().min(2).max(40),
+            content: joi.string().min(10)
+        });
+        return articleSchema.validate(body)
+    }
 };
 
 module.exports = Article
